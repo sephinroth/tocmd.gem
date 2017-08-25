@@ -111,6 +111,10 @@ class Tocmd::Translator
 				process_with_one(destiny_dir,dest_dir,ff)
 			
 			end
+      # 递归处理子目录下的MD文件
+      if File.directory?(ff)
+        build_with_dir(destiny_dir + '/' + ff, dest_dir + '/' + ff) unless ['.', '..'].include?(ff)
+      end
 		end 
 	end 
  
@@ -232,6 +236,7 @@ class Tocmd::Translator
 			build_dir = 'preview/'
 			
 			p 'build = ' + dest_dir + '/' + ff.gsub('.md','') + '.html'
+      FileUtils::mkdir_p dest_dir unless Dir.exist?(dest_dir)
 			IO.write(dest_dir +  '/'  + ff.gsub('.md','') + '.html',t) # => 10
 		else
 			# p '2build src/' + ff.gsub('.md','') + '.html'
